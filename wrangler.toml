@@ -4,7 +4,7 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "shouna-db"
-database_id = "9853e8ce-641c-4478-b5b8-696b09907ef2"
+database_id = "be60fb77-0313-45e9-9ec1-ae42137a7ff4"
 
 [[r2_buckets]]
 binding = "BUCKET"
