@@ -189,6 +189,7 @@ import api from '@/api'
 import { useFamilyStore } from '@/stores/family'
 import { useToast } from '@/composables/useToast'
 import { useFab } from '@/composables/useFab'
+import { syncItemPhotos } from '@/utils/photos'
 import AppLayout from '@/layouts/AppLayout.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import FilterChips from '@/components/FilterChips.vue'
@@ -412,10 +413,13 @@ async function handleFormSave(formData) {
     }
 
     const saveData = { ...formData, storage_spot_id: storageSpotId }
-    delete saveData.custom_storage_name
+    delete saveData.photos
     delete saveData.deletedPhotoIds
+    delete saveData.custom_storage_name
 
     if (editingItem.value) {
+      // 同步照片（上传新增/删除被移除），再更新物品信息
+      await syncItemPhotos(editingItem.value.id, formData.photos, formData.deletedPhotoIds)
       await api.put('/items/' + editingItem.value.id, saveData)
       show('物品已更新', 'success')
       formVisible.value = false
@@ -426,8 +430,9 @@ async function handleFormSave(formData) {
       show('物品已添加', 'success')
       formVisible.value = false
       editingItem.value = null
-      // 新建成功后自动跳转到物品详情页
+      // 上传本次选择的照片，再跳转到详情页
       if (res.data && res.data.id) {
+        await syncItemPhotos(res.data.id, formData.photos, formData.deletedPhotoIds)
         router.push('/items/' + res.data.id)
       } else {
         fetchItems()

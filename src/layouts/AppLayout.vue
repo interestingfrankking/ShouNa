@@ -144,6 +144,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useFamilyStore } from '@/stores/family'
 import { useFab } from '@/composables/useFab'
 import { useToast } from '@/composables/useToast'
+import { syncItemPhotos } from '@/utils/photos'
 import api from '@/api'
 import ToastNotification from '@/components/ToastNotification.vue'
 import ItemForm from '@/components/ItemForm.vue'
@@ -194,11 +195,24 @@ watch(() => route.path, () => {
 
 async function onItemSave(itemData) {
   try {
-    const res = await api.post('/items', itemData)
+    // If custom storage name provided, create the storage spot first
+    let storageSpotId = itemData.storage_spot_id
+    if (!storageSpotId && itemData.custom_storage_name && itemData.room_id) {
+      const res = await api.post('/storage', { room_id: itemData.room_id, name: itemData.custom_storage_name })
+      storageSpotId = res.data.id
+    }
+
+    const saveData = { ...itemData, storage_spot_id: storageSpotId }
+    delete saveData.photos
+    delete saveData.deletedPhotoIds
+    delete saveData.custom_storage_name
+
+    const res = await api.post('/items', saveData)
     showItemForm.value = false
     showToast('物品添加成功')
-    // 新建成功后自动跳转到物品详情页
+    // 上传本次选择的照片，再跳转到物品详情页
     if (res.data && res.data.id) {
+      await syncItemPhotos(res.data.id, itemData.photos, itemData.deletedPhotoIds)
       router.push('/items/' + res.data.id)
     }
   } catch {
