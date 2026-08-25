@@ -117,6 +117,12 @@ wrangler login
 npm run deploy
 ```
 
+> ⚠️ **重要提示（部署前必读）**：
+>
+> 1. **绑定必须生效，否则注册/登录会报 500**。`wrangler.toml` 中的 `pages_build_output_dir` 是让 D1/R2 绑定在生产环境生效的关键，**不能删除**；`database_id` 必须是你自己账号里真实存在的 D1 数据库 ID（`wrangler d1 list` 可查看），R2 bucket 名称也必须是真实存在的。
+> 2. **方式一（Git 自动部署）不会读取 `wrangler.toml` 中的绑定**。如果使用 Git 集成部署，必须到 Cloudflare Dashboard → Pages 项目 → Settings → **Bindings** 手动添加：D1（变量名 `DB`）和 R2（变量名 `BUCKET`），并添加 `JWT_SECRET`、`JWT_REFRESH_SECRET` 两个加密变量，否则生产环境 `env.DB` 为 undefined，注册接口返回 500。
+> 3. 首次注册无需邀请码（自动创建家庭）；之后注册需要邀请码。
+
 ## 环境变量
 
 | 变量名 | 说明 | 是否必需 |
