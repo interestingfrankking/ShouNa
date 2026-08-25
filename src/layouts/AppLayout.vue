@@ -139,7 +139,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useFamilyStore } from '@/stores/family'
 import { useFab } from '@/composables/useFab'
@@ -151,6 +151,7 @@ import ItemForm from '@/components/ItemForm.vue'
 const authStore = useAuthStore()
 const familyStore = useFamilyStore()
 const route = useRoute()
+const router = useRouter()
 const { show: showToast } = useToast()
 const currentFamilyId = computed(() => familyStore.currentFamilyId)
 
@@ -193,9 +194,13 @@ watch(() => route.path, () => {
 
 async function onItemSave(itemData) {
   try {
-    await api.post('/items', itemData)
+    const res = await api.post('/items', itemData)
     showItemForm.value = false
     showToast('物品添加成功')
+    // 新建成功后自动跳转到物品详情页
+    if (res.data && res.data.id) {
+      router.push('/items/' + res.data.id)
+    }
   } catch {
     showToast('添加物品失败', 'error')
   }

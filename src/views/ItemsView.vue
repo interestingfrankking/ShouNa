@@ -184,7 +184,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
 import { useFamilyStore } from '@/stores/family'
 import { useToast } from '@/composables/useToast'
@@ -200,6 +200,7 @@ import MoveItemDialog from '@/components/MoveItemDialog.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 
 const route = useRoute()
+const router = useRouter()
 const familyStore = useFamilyStore()
 const { show } = useToast()
 const { pendingAction, clearAction } = useFab()
@@ -417,13 +418,21 @@ async function handleFormSave(formData) {
     if (editingItem.value) {
       await api.put('/items/' + editingItem.value.id, saveData)
       show('物品已更新', 'success')
+      formVisible.value = false
+      editingItem.value = null
+      fetchItems()
     } else {
-      await api.post('/items', saveData)
+      const res = await api.post('/items', saveData)
       show('物品已添加', 'success')
+      formVisible.value = false
+      editingItem.value = null
+      // 新建成功后自动跳转到物品详情页
+      if (res.data && res.data.id) {
+        router.push('/items/' + res.data.id)
+      } else {
+        fetchItems()
+      }
     }
-    formVisible.value = false
-    editingItem.value = null
-    fetchItems()
   } catch (err) {
     show(err.message || '操作失败', 'error')
   }
