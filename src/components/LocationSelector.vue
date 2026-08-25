@@ -30,6 +30,20 @@
         </select>
       </template>
     </div>
+
+    <!-- 引导提示：缺少层级数据时告知用户先创建 -->
+    <div v-if="houses.length === 0" class="location-hint">
+      <i class="fa-solid fa-circle-info"></i>
+      还没有住所，请先到
+      <router-link to="/houses">「住所」</router-link>
+      页面创建住所，再添加房间和收纳位
+    </div>
+    <div v-else-if="selectedHouseId && rooms.length === 0" class="location-hint">
+      <i class="fa-solid fa-circle-info"></i>
+      该住所还没有房间，请先到
+      <router-link to="/houses">「住所」</router-link>
+      页面添加房间
+    </div>
   </div>
 </template>
 
@@ -163,6 +177,26 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.location-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-info-light, #eff6ff);
+  color: var(--color-info, #2563eb);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  flex-wrap: wrap;
+}
+
+.location-hint a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: underline;
+}
+
 .custom-storage-wrapper {
   display: flex;
   gap: var(--space-2);

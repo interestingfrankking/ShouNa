@@ -72,6 +72,11 @@
     </div>
     <ToastNotification />
 
+    <!-- FAB 悬浮按钮（桌面端显示，移动端用底部工具栏 +） -->
+    <button class="fab" @click="toggleFab" aria-label="添加">
+      <i :class="fabOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-plus'"></i>
+    </button>
+
     <!-- FAB 遮罩 -->
     <div v-if="fabOpen" class="fab-overlay" @click="closeFab"></div>
 
@@ -173,8 +178,8 @@ const fabConfig = computed(() => {
 // 监听 FAB 动作：处理"直接添加物品"
 watch(pendingAction, (action) => {
   if (action === 'add-item') {
-    // ItemsView 有自己的添加物品表单，由其自行处理
-    if (route.name === 'Items') return
+    // 物品列表页（含收纳位物品页）由 ItemsView 自己的表单处理
+    if (route.name === 'Items' || route.name === 'ItemsSearch') return
     showItemForm.value = true
     clearAction()
   }

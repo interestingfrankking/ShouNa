@@ -587,7 +587,7 @@
   border-radius: var(--radius-full);
   background: var(--color-primary);
   color: #FFF;
-  display: flex;
+  display: none; /* 移动端使用底部工具栏的 + 按钮 */
   align-items: center;
   justify-content: center;
   font-size: 22px;
@@ -603,8 +603,9 @@
   transform: scale(1.05);
 }
 
+/* 桌面端显示悬浮添加按钮 */
 @media (min-width: 768px) {
-  .fab { display: none; }
+  .fab { display: flex; }
 }
 
 .fab-overlay {
@@ -612,10 +613,6 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
   z-index: var(--z-fixed);
-}
-
-@media (min-width: 768px) {
-  .fab-overlay { display: none; }
 }
 
 .fab-menu {

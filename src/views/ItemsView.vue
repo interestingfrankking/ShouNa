@@ -377,9 +377,9 @@ function openAdd() {
   formVisible.value = true
 }
 
-// 监听 FAB 动作：在收纳位物品页直接打开添加物品表单
+// 监听 FAB 动作：打开添加物品表单（搜索页与收纳位物品页都支持）
 watch(pendingAction, (action) => {
-  if (action === 'add-item' && isStorageMode.value) {
+  if (action === 'add-item') {
     openAdd()
     clearAction()
   }

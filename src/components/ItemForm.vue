@@ -44,6 +44,11 @@
       @change="onLocationChange"
     />
 
+    <div v-if="formError" class="form-error-text">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      {{ formError }}
+    </div>
+
     <div class="modal-btns" style="margin-top: var(--space-4);">
       <button type="button" class="btn btn-outline" @click="$emit('cancel')">取消</button>
       <button type="submit" class="btn btn-primary">保存</button>
@@ -82,6 +87,8 @@ const form = ref({
   storageId: null
 })
 
+const formError = ref('')
+
 // Track deleted photo IDs for backend handling
 const deletedPhotoIds = ref([])
 
@@ -112,6 +119,7 @@ async function fetchCategories() {
 
 function onLocationChange(data) {
   locationData.value = data
+  formError.value = ''
 }
 
 function handlePhotoAdd() {
@@ -148,6 +156,12 @@ function handlePhotoPreview(photo) {
 
 function handleSave() {
   if (!form.value.name.trim()) return
+  // 必须选择或创建收纳位置（后端 items 表要求 storage_spot_id 非空）
+  const storageId = locationData.value.storageId || props.defaultStorageId
+  if (!storageId && !(locationData.value.customStorageName && locationData.value.roomId)) {
+    formError.value = '请先选择或创建收纳位置：需要依次创建「住所 → 房间 → 收纳位」，或在收纳位置中选择「+ 自定义输入」'
+    return
+  }
   emit('save', {
     name: form.value.name.trim(),
     category_id: form.value.category_id || null,
@@ -167,5 +181,18 @@ function handleSave() {
 .item-form textarea.form-input {
   resize: vertical;
   min-height: 80px;
+}
+
+.form-error-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-error-light, #fef2f2);
+  color: var(--color-error, #dc2626);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: 1.5;
 }
 </style>
