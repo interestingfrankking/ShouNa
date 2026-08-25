@@ -56,6 +56,9 @@
           <div class="sidebar-user-name">{{ authStore.user.nickname || authStore.user.email }}</div>
           <div class="sidebar-user-email">{{ authStore.user.email }}</div>
         </div>
+        <button class="sidebar-logout" @click="handleSidebarLogout" title="退出登录" aria-label="退出登录">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
       </div>
     </aside>
     <div class="app-main">
@@ -183,4 +186,9 @@ onMounted(async () => {
     await familyStore.fetchFamilies()
   }
 })
+
+async function handleSidebarLogout() {
+  await authStore.logout()
+  router.push('/login')
+}
 </script>

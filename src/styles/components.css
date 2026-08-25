@@ -116,6 +116,27 @@
   white-space: nowrap;
 }
 
+.sidebar-logout {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.sidebar-logout:hover {
+  background: var(--color-error);
+  color: #FFF;
+}
+
 /* ===== Toolbar ===== */
 .app-toolbar {
   height: 52px;
