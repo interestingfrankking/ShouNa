@@ -12,8 +12,15 @@
 
       <!-- Mobile header -->
       <header class="mobile-header">
-        <h2>房间</h2>
-        <p>{{ houseName }}</p>
+        <div class="mobile-header-row">
+          <div>
+            <h2>房间</h2>
+            <p>{{ houseName }}</p>
+          </div>
+          <button class="btn btn-primary btn-sm" @click="showAddModal = true">
+            <i class="fa-solid fa-plus"></i> 添加
+          </button>
+        </div>
       </header>
 
       <!-- PC page header -->
@@ -40,7 +47,7 @@
         v-else-if="rooms.length === 0"
         icon="fa-solid fa-door-open"
         text="还没有添加房间"
-        hint="点击下方按钮添加房间"
+        hint="点击右上角「添加」按钮创建房间"
       />
 
       <!-- Card grid -->

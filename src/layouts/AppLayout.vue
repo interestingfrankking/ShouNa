@@ -73,30 +73,9 @@
     <ToastNotification />
 
     <!-- FAB 悬浮按钮（桌面端显示，移动端用底部工具栏 +） -->
-    <button class="fab" @click="toggleFab" aria-label="添加">
-      <i :class="fabOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-plus'"></i>
+    <button class="fab" @click="requestAddItem" aria-label="添加物品">
+      <i class="fa-solid fa-plus"></i>
     </button>
-
-    <!-- FAB 遮罩 -->
-    <div v-if="fabOpen" class="fab-overlay" @click="closeFab"></div>
-
-    <!-- FAB 菜单 -->
-    <div v-if="fabOpen && fabConfig.showAddCurrent" class="fab-menu">
-      <button class="fab-menu-item add-current" @click="requestAddCurrent">
-        <i :class="fabConfig.currentIcon"></i>
-        {{ fabConfig.currentLabel }}
-      </button>
-      <button class="fab-menu-item add-item" @click="requestAddItem">
-        <i class="fa-solid fa-box"></i>
-        直接添加物品
-      </button>
-    </div>
-    <div v-else-if="fabOpen && fabConfig.showAddItem" class="fab-menu">
-      <button class="fab-menu-item add-item" @click="requestAddItem">
-        <i class="fa-solid fa-box"></i>
-        直接添加物品
-      </button>
-    </div>
 
     <!-- 直接添加物品 - ItemForm 底部弹窗 -->
     <Teleport to="body">
@@ -121,9 +100,9 @@
         <i class="fa-solid fa-boxes-stacked"></i>
         <span>物品</span>
       </router-link>
-      <button class="tab-item add-btn" @click="toggleFab" aria-label="添加">
-        <i :class="fabOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-circle-plus'"></i>
-        <span>{{ fabOpen ? '关闭' : '添加' }}</span>
+      <button class="tab-item add-btn" @click="requestAddItem" aria-label="添加物品">
+        <i class="fa-solid fa-circle-plus"></i>
+        <span>添加</span>
       </button>
       <router-link to="/trash" class="tab-item" active-class="active">
         <i class="fa-solid fa-trash-can"></i>
@@ -156,26 +135,10 @@ const router = useRouter()
 const { show: showToast } = useToast()
 const currentFamilyId = computed(() => familyStore.currentFamilyId)
 
-const { fabOpen, pendingAction, toggleFab, closeFab, requestAddCurrent, requestAddItem, clearAction } = useFab()
+const { pendingAction, requestAddItem, clearAction } = useFab()
 
 const showItemForm = ref(false)
 const familyId = computed(() => Number(familyStore.currentFamilyId))
-
-// 根据当前路由计算 FAB 菜单配置
-const fabConfig = computed(() => {
-  const name = route.name
-  if (name === 'Houses') {
-    return { showAddCurrent: true, currentLabel: '添加住所', currentIcon: 'fa-solid fa-house', showAddItem: true }
-  }
-  if (name === 'Rooms') {
-    return { showAddCurrent: true, currentLabel: '添加房间', currentIcon: 'fa-solid fa-door-open', showAddItem: true }
-  }
-  if (name === 'Storage') {
-    return { showAddCurrent: true, currentLabel: '添加收纳位', currentIcon: 'fa-solid fa-box-archive', showAddItem: true }
-  }
-  // 其他页面只显示"直接添加物品"
-  return { showAddCurrent: false, currentLabel: '', currentIcon: '', showAddItem: true }
-})
 
 // 监听 FAB 动作：处理"直接添加物品"
 watch(pendingAction, (action) => {
@@ -186,11 +149,6 @@ watch(pendingAction, (action) => {
     clearAction()
   }
   // 'add-current' 由各视图自行监听处理
-})
-
-// 路由变化时关闭 FAB
-watch(() => route.path, () => {
-  closeFab()
 })
 
 async function onItemSave(itemData) {

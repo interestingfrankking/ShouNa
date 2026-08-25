@@ -1370,6 +1370,14 @@
   margin-top: 2px;
 }
 
+/* 移动端头部右侧操作按钮（住所/房间/收纳位页的添加入口） */
+.mobile-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
 /* ===== Highlight ===== */
 .highlight {
   background: #FEF08A;

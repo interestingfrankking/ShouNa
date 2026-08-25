@@ -10,8 +10,15 @@
 
       <!-- Mobile header -->
       <header class="mobile-header">
-        <h2>住所</h2>
-        <p>管理你的房屋和房间</p>
+        <div class="mobile-header-row">
+          <div>
+            <h2>住所</h2>
+            <p>管理你的房屋和房间</p>
+          </div>
+          <button class="btn btn-primary btn-sm" @click="showAddModal = true">
+            <i class="fa-solid fa-plus"></i> 添加
+          </button>
+        </div>
       </header>
 
       <!-- PC page header -->
@@ -38,7 +45,7 @@
         v-else-if="houses.length === 0"
         icon="fa-solid fa-house"
         text="还没有添加住所"
-        hint="点击下方按钮添加你的第一个住所"
+        hint="点击右上角「添加」按钮创建住所"
       />
 
       <!-- Card grid -->

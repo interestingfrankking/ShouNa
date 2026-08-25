@@ -14,8 +14,15 @@
 
       <!-- Mobile header -->
       <header class="mobile-header">
-        <h2>收纳位</h2>
-        <p>{{ houseName }} · {{ roomName }}</p>
+        <div class="mobile-header-row">
+          <div>
+            <h2>收纳位</h2>
+            <p>{{ houseName }} · {{ roomName }}</p>
+          </div>
+          <button class="btn btn-primary btn-sm" @click="showAddModal = true">
+            <i class="fa-solid fa-plus"></i> 添加
+          </button>
+        </div>
       </header>
 
       <!-- PC page header -->
@@ -42,7 +49,7 @@
         v-else-if="storages.length === 0"
         icon="fa-solid fa-box-archive"
         text="还没有添加收纳位"
-        hint="点击下方按钮添加收纳位"
+        hint="点击右上角「添加」按钮创建收纳位"
       />
 
       <!-- Card grid -->
