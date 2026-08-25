@@ -169,6 +169,6 @@ export async function onRequestPost(context) {
 
   } catch (err) {
     console.error('Register error:', err.message, err.stack);
-    return errorResponse('SERVER_ERROR', err.message || '注册失败，请稍后再试', 500);
+    return errorResponse('SERVER_ERROR', '注册失败，请稍后再试', 500);
   }
 }
