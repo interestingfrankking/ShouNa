@@ -43,6 +43,7 @@
           :photos="item.photos || []"
           :can-add="true"
           :can-delete="true"
+          size="large"
           @add="handlePhotoAdd"
           @delete="handlePhotoDelete"
           @preview="handlePhotoPreview"

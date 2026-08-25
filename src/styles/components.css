@@ -843,6 +843,27 @@
 
 .photo-add i { font-size: var(--text-xl); }
 
+/* ===== Photo Grid - Large（物品详情页大图模式） ===== */
+.photo-grid-lg {
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.photo-grid-lg img {
+  height: 240px;
+}
+
+.photo-grid-lg .photo-add {
+  height: 240px;
+}
+
+@media (max-width: 767px) {
+  .photo-grid-lg img,
+  .photo-grid-lg .photo-add {
+    height: 160px;
+  }
+}
+
 /* ===== Property List ===== */
 .prop-list {
   background: var(--bg-card);

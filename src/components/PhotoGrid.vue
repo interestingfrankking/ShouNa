@@ -1,5 +1,5 @@
 <template>
-  <div class="photo-grid">
+  <div class="photo-grid" :class="{ 'photo-grid-lg': size === 'large' }">
     <template v-for="photo in photos" :key="photo.id">
       <div style="position: relative;">
         <img :src="photo.url" :alt="photo.id" @click="$emit('preview', photo)" />
@@ -23,7 +23,8 @@
 defineProps({
   photos: { type: Array, default: () => [] },
   canAdd: { type: Boolean, default: true },
-  canDelete: { type: Boolean, default: false }
+  canDelete: { type: Boolean, default: false },
+  size: { type: String, default: 'normal' } // 'normal' | 'large'
 })
 
 defineEmits(['add', 'delete', 'preview'])
