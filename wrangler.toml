@@ -5,7 +5,7 @@ pages_build_output_dir = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "shouna-db"
-database_id = "be60fb77-0313-45e9-9ec1-ae42137a7ff4"
+database_id = "211ff579-daf0-42d9-a680-10fc4870ca24"
 
 [[r2_buckets]]
 binding = "BUCKET"
