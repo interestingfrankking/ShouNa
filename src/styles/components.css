@@ -850,17 +850,17 @@
 }
 
 .photo-grid-lg img {
-  height: 240px;
+  height: 320px;
 }
 
 .photo-grid-lg .photo-add {
-  height: 240px;
+  height: 320px;
 }
 
 @media (max-width: 767px) {
   .photo-grid-lg img,
   .photo-grid-lg .photo-add {
-    height: 160px;
+    height: 220px;
   }
 }
 
